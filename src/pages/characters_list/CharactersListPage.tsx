@@ -1,13 +1,15 @@
 import { useEffect, useState } from "react";
 import { CharactersList } from "../../components/characters-list/CharactersList";
 import type { Character } from "../../components/characters-list/types";
-import { Loading } from "../../components/loading/Loading";
 import { useGetCharactersQuery } from "../../graphql/generated"
+
+const ITEMS_PER_PAGE = 20;
 
 export const CharactersListPage = () => {
   const [currentCharacters, setCurrentCharacters] = useState<Character[]>([]);
-  const [, setAllCharacters] = useState<Character[]>([]);
-  const [allCharactersCurrentPage, setAllCharactersCurrentPage] = useState(0);
+  const [allCharacters, setAllCharacters] = useState<Character[]>([]);
+  const [allCharactersCurrentPage, setAllCharactersCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(1);
   const { data } = useGetCharactersQuery({
     variables: {
       page: allCharactersCurrentPage
@@ -26,7 +28,7 @@ export const CharactersListPage = () => {
         setCurrentCharacters(characters)
       }
 
-      if(data?.characters?.info?.pages) {
+      if(data?.characters?.info?.next) {
         setAllCharactersCurrentPage((prev) => prev + 1)
       }
 
@@ -36,15 +38,19 @@ export const CharactersListPage = () => {
     getCharacters();
   }, [currentCharacters.length, data])
 
-  if(!currentCharacters.length) {
-    return (
-      <Loading />
-    )
+  const handleGetNextPage = () => {
+    const newPage = currentPage + 1;
+    const newCurrentCharacters = allCharacters.slice(0, (newPage * ITEMS_PER_PAGE));
+    setCurrentCharacters(newCurrentCharacters);
+    setCurrentPage((prev) => prev + 1);
   }
 
   return (
     <div className="grid grid-cols-4 gap-4">
-      <CharactersList characters={currentCharacters}/>
+      <CharactersList
+        characters={currentCharacters}
+        handleGetNextPage={handleGetNextPage}
+      />
     </div>
   )
 }
