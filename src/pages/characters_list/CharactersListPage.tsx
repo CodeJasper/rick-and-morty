@@ -5,38 +5,52 @@ import { useGetCharactersQuery } from "../../graphql/generated"
 
 const ITEMS_PER_PAGE = 20;
 
+type Sorting = 'asc' | 'desc';
+
 export const CharactersListPage = () => {
   const [currentCharacters, setCurrentCharacters] = useState<Character[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [currentSort, setCurrentSort] = useState<Sorting | undefined>();
   const [allCharacters, setAllCharacters] = useState<Character[]>([]);
   const [allCharactersCurrentPage, setAllCharactersCurrentPage] = useState(1);
-  const [currentPage, setCurrentPage] = useState(1);
+  const [allCharactersLoading, setAllCharactersLoading] = useState(true);
+
   const { data } = useGetCharactersQuery({
     variables: {
       page: allCharactersCurrentPage
     }
   });
 
+  const sortByName = (characters: Character[], sort: Sorting) => {
+    if(sort === 'asc') {
+      return [...characters].sort((a, b) => a.name.localeCompare(b.name));
+    }
+
+    return [...characters].sort((a, b) => b.name.localeCompare(a.name));
+  }
+
   useEffect(() => {
     const getCharacters = () => {
       const characters = data?.characters?.results as Character[];
-
-      if(!characters) {
+      if(!characters || !allCharactersLoading) {
         return;
       }
 
       if(!currentCharacters.length) {
-        setCurrentCharacters(characters)
+       setCurrentCharacters(characters.slice(0, ITEMS_PER_PAGE));
       }
 
       if(data?.characters?.info?.next) {
         setAllCharactersCurrentPage((prev) => prev + 1)
+      } else {
+        setAllCharactersLoading(false);
       }
 
       setAllCharacters((prev) => [...prev, ...characters]);
     }
 
     getCharacters();
-  }, [currentCharacters.length, data])
+  }, [data, allCharactersLoading, currentCharacters.length])
 
   const handleGetNextPage = () => {
     const newPage = currentPage + 1;
@@ -45,11 +59,31 @@ export const CharactersListPage = () => {
     setCurrentPage((prev) => prev + 1);
   }
 
+  const handleSortByName = () => {
+    let newAllCharacters: Character[];
+    let newSorting: Sorting | undefined;
+    if(currentSort === 'asc') {
+      newAllCharacters = sortByName(allCharacters, 'desc');
+      newSorting = 'desc';
+    } else {
+      newAllCharacters = sortByName(allCharacters, 'asc');
+      newSorting = 'asc';
+    }
+
+    const newCurrentCharacters = newAllCharacters.slice(0, ITEMS_PER_PAGE);
+
+    setCurrentSort(newSorting);
+    setAllCharacters(newAllCharacters);
+    setCurrentPage(1);
+    setCurrentCharacters(newCurrentCharacters);
+  }
+
   return (
     <div className="grid grid-cols-4 gap-4">
       <CharactersList
         characters={currentCharacters}
         handleGetNextPage={handleGetNextPage}
+        handleSortByName={handleSortByName}
       />
     </div>
   )

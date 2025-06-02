@@ -6,10 +6,11 @@ import { CharacterCard } from "./CharacterCard";
 type CharacterListProps = {
   characters: Character[];
   handleGetNextPage: () => void;
+  handleSortByName: () => void;
 };
 
 export const CharactersList = (props: CharacterListProps) => {
-  const { characters, handleGetNextPage } = props;
+  const { characters, handleGetNextPage, handleSortByName } = props;
   const { ref, inView } = useInView({ threshold: 1 });
   const isLockedRef = useRef<boolean>(false);
   const hasMountedRef = useRef<boolean>(false);
@@ -21,7 +22,7 @@ export const CharactersList = (props: CharacterListProps) => {
         handleGetNextPage();
         setTimeout(() => {
           isLockedRef.current = false;
-        }, 1000);
+        }, 500);
       }  else {
         hasMountedRef.current = true;
       }
@@ -30,6 +31,7 @@ export const CharactersList = (props: CharacterListProps) => {
 
   return (
     <>
+      <button onClick={handleSortByName}>Sort by Name</button>
       {characters.map((character) => (
         <CharacterCard key={character.id} character={character} />
       ))}
