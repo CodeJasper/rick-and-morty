@@ -8,15 +8,11 @@ export const CharacterCard = (props: CharacterCardProps) => {
   const { character } = props;
 
   return (
-    <div className="max-w-sm bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700">
-      <a href="#">
-        <img className="rounded-t-lg" src={character.image} alt="" />
-      </a>
-      <div className="p-5">
-        <a href="#">
-          <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{character.name}</h5>
-          <p className="mb-2 text-sm text-black">Species: {character.species}</p>
-        </a>
+    <div className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition border border-gray-200">
+      <img className="w-full object-cover" src={character.image} alt={character.name} />
+      <div className="p-4">
+        <h3 className="text-xl font-semibold text-gray-800 break-words text-center">{character.name}</h3>
+        <p className="text-sm text-gray-600 text-center">Species: {character.species}</p>
       </div>
     </div>
   );
