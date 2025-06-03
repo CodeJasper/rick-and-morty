@@ -1,54 +1,100 @@
-# React + TypeScript + Vite
+# 🧪 Rick and Morty
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This is a project that displays a list of characters from the Rick and Morty API using React, TypeScript, and GraphQL.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🔧 Installation
 
-## Expanding the ESLint configuration
+1. Clone the repository:
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+```bash
+git clone https://github.com/codejasper/rick-and-morty.git
+cd rick-and-morty
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+2. Clone the repository:
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
+```bash
+npm install
 ```
+
+3. Start the development server::
+
+```bash
+npm run dev
+```
+
+---
+
+📡 Using the Rick and Morty API
+
+This project uses the [Rick and Morty GraphQL API](https://rickandmortyapi.com/documentation).
+No authentication is required — you can query data directly via Apollo Client.
+
+Example query used in the app:
+
+```bash
+query {
+  characters(page: 1) {
+    results {
+      id
+      name
+      image
+    }
+  }
+}
+```
+
+The API supports pagination, filtering, and retrieving individual characters by ID.
+
+---
+
+🧪 Running Tests
+
+Run all unit tests with:
+
+```bash
+npm run test
+```
+
+Or run in watch mode:
+
+```bash
+npm run test:watch
+```
+
+This project uses:
+
+- [Vitest](https://vitest.dev/) for the test runner
+- [React Testing Library](https://testing-library.com/) for component testing
+- Mocking with `vi.mock()`
+
+---
+
+## 🌐 Live Demo
+
+The app is deployed using GitHub Pages:  
+👉 [https://codejasper.github.io/rick-and-morty/](https://codejasper.github.io/rick-and-morty/)
+
+---
+
+## 📁 Project Structure
+
+```bash
+src/
+├── components/          # Reusable UI components
+├── pages/               # Page views
+├── store/               # Zustand global state management
+├── graphql/             # Apollo GraphQL setup and generated code
+├── test/                # Unit tests
+└── main.tsx             # Entry point
+```
+
+---
+
+## 📝 Notes
+
+- Character favorites and comments are stored in `localStorage` via Zustand persist.
+- Infinite scroll is used instead of traditional pagination for a smoother experience.
+- A custom UI design was implemented due to limited access to the original Figma.
