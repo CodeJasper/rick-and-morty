@@ -1,22 +1,28 @@
-import { type Comment } from './type';
+import { useParams } from 'react-router-dom';
+import { useCharacterStore } from '../../store/useCharacterStore';
+import { type Comment } from '../../components/comments/type'
 
-type CommentsListProps = {
-  comments: Comment[];
-}
+export const CommentsList = () => {
+  const { id } = useParams<{ id: string }>();
+  const { getComments } = useCharacterStore();
+  let comments: Comment[] = [];
 
-export const CommentsList = ({ comments }: CommentsListProps) => {
+  if(id) {
+    comments = getComments(id);
+  }
+
   return (
     <>
       {comments.length === 0 ? (
         <p className="text-gray-500 text-sm italic">There are not comments available.</p>
       ) : (
         <ul className="space-y-3">
-          {comments.map((comment) => (
+          {comments.map(({id, text}) => (
             <li
-              key={comment.id}
+              key={id}
               className="bg-gray-50 border border-gray-200 rounded-md p-4 text-sm text-gray-800 shadow-sm"
             >
-              {comment.text}
+              {text}
             </li>
           ))}
         </ul>

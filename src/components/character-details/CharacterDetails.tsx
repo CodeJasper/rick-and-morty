@@ -1,3 +1,4 @@
+import { useCharacterStore } from "../../store/useCharacterStore";
 import { CommentsSection } from "../comments/CommentsSection";
 import { FavoriteButton } from "../favorite-button/FavoriteButton";
 import type { CharacterDetail } from "./types";
@@ -7,6 +8,8 @@ type CharacterDetailProps = {
 };
 
 export const CharacterDetails = ({ character }: CharacterDetailProps) => {
+  const { isFavorite, toggleFavorite } = useCharacterStore();
+
   return (
     <>
       <div className="bg-white rounded-xl shadow-md p-6">
@@ -19,7 +22,10 @@ export const CharacterDetails = ({ character }: CharacterDetailProps) => {
           <div className="grow">
             <div className="mb-6 flex gap-2 flex-col lg:gap-6 lg:flex-row items-start justify-between">
               <h2 className="text-3xl font-bold mb-2">{character.name}</h2>
-              <FavoriteButton />
+              <FavoriteButton
+                isFavorite={isFavorite(character.id)}
+                handleToggleFavorite={() => toggleFavorite(character.id)}
+              />
             </div>
             <p className="text-gray-600 mb-1"><strong>Species:</strong> {character.species}</p>
             <p className="text-gray-600 mb-1"><strong>Status:</strong> {character.status}</p>
