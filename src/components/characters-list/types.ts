@@ -1,5 +1,6 @@
-import { type CharacterFieldsFragment } from "../../graphql/generated"
+import type { CharacterListItemFieldsFragment } from "../../graphql/generated";
 
-export type Character = {
-  [K in keyof CharacterFieldsFragment]-?: NonNullable<CharacterFieldsFragment[K]>;
+
+export type CharacterListItem = {
+  [K in keyof CharacterListItemFieldsFragment]-?: NonNullable<CharacterListItemFieldsFragment[K]>;
 };
