@@ -31,6 +31,10 @@ export const CharactersListPage = () => {
   }
 
   useEffect(() => {
+    setAllCharacters([]);
+  }, []);
+
+  useEffect(() => {
     const getCharacters = () => {
       const characters = data?.characters?.results as CharacterListItem[];
       if(!characters || !allCharactersLoading) {
