@@ -3,7 +3,7 @@ import type { CharacterListItem } from "./types";
 import { FavoriteButton } from "../favorite-button/FavoriteButton";
 import { useCharacterStore } from "../../store/useCharacterStore";
 
-type CharacterCardProps = {
+export type CharacterCardProps = {
   character: CharacterListItem;
 };
 

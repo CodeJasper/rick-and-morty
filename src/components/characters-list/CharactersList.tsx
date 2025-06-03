@@ -34,6 +34,7 @@ export const CharactersList = (props: CharacterListProps) => {
 
       {(characters.length > 0 && !allCharactersLoading) && (
         <div
+          data-testid="sentinel"
           ref={ref}
           style={{ height: "1px", width: "100%", visibility: "hidden" }}
         />

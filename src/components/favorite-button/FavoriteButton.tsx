@@ -1,4 +1,4 @@
-type FavoriteButtonProps = {
+export type FavoriteButtonProps = {
   iconOnly?: boolean;
   className?: string;
   isFavorite: boolean;
