@@ -1,15 +1,17 @@
-import { useState } from "react";
 import { CommentsList } from "./CommentsList";
-import { type Comment } from './type';
+import { useCharacterStore } from "../../store/useCharacterStore";
+import { useState } from "react";
+import { useParams } from "react-router-dom";
 
 export const CommentsSection = () => {
-  const [comment, setComment] = useState("");
-  const [comments, setComments] = useState<Comment[]>([]);
+  const { id } = useParams<{ id: string }>();
+  const [comment, setComment] = useState('');
+  const { addComment} = useCharacterStore();
 
   const handleAddComment = () => {
-    if (comment.trim() === "") return;
-    setComments((prev) => [...prev, {text: comment.trim(), id: crypto.randomUUID()}]);
-    setComment("");
+    if (comment.trim() === "" || !id) return;
+    const newComment = {text: comment.trim(), id: crypto.randomUUID()};
+    addComment(id, newComment);
   };
 
   return (
@@ -36,7 +38,7 @@ export const CommentsSection = () => {
         </button>
       </div>
 
-      <CommentsList comments={comments} />
+      <CommentsList />
     </div>
   );
 };

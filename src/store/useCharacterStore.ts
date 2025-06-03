@@ -1,13 +1,15 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
+import { type Comment} from '../components/comments/type';
 
 interface CharacterStoreProps {
   favorites: string[];
-  comments: Record<string, string[]>;
+  comments: Record<string, Comment[]>;
 
   isFavorite: (id: string) => boolean;
   toggleFavorite: (id: string) => void;
-  addComment: (id: string, comment: string) => void;
+  addComment: (id: string, comment: Comment) => void;
+  getComments: (id: string) => Comment[];
 }
 
 export const useCharacterStore = create<CharacterStoreProps>()(
@@ -34,6 +36,10 @@ export const useCharacterStore = create<CharacterStoreProps>()(
         };
         set({ comments: updated });
       },
+      getComments: (id) => {
+        const current = get().comments;
+        return current[id] || [];
+      }
     }),
     {
       name: 'character-storage',
