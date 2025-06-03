@@ -7,7 +7,7 @@ query GetCharacters($page: Int) {
       prev
     }
     results {
-      ...CharacterFields
+      ...CharacterListItemFields
     }
   }
 }

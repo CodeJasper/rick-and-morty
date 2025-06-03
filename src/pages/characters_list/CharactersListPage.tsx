@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { CharactersList } from "../../components/characters-list/CharactersList";
-import type { Character } from "../../components/characters-list/types";
+import type { CharacterListItem } from "../../components/characters-list/types";
 import { useGetCharactersQuery } from "../../graphql/generated"
 import { Loading } from "../../components/loading/Loading";
 
@@ -9,10 +9,10 @@ const ITEMS_PER_PAGE = 20;
 type Sorting = 'asc' | 'desc';
 
 export const CharactersListPage = () => {
-  const [currentCharacters, setCurrentCharacters] = useState<Character[]>([]);
+  const [currentCharacters, setCurrentCharacters] = useState<CharacterListItem[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [currentSort, setCurrentSort] = useState<Sorting | undefined>();
-  const [allCharacters, setAllCharacters] = useState<Character[]>([]);
+  const [allCharacters, setAllCharacters] = useState<CharacterListItem[]>([]);
   const [allCharactersCurrentPage, setAllCharactersCurrentPage] = useState(1);
   const [allCharactersLoading, setAllCharactersLoading] = useState(true);
 
@@ -22,7 +22,7 @@ export const CharactersListPage = () => {
     }
   });
 
-  const sortByName = (characters: Character[], sort: Sorting) => {
+  const sortByName = (characters: CharacterListItem[], sort: Sorting) => {
     if(sort === 'asc') {
       return [...characters].sort((a, b) => a.name.localeCompare(b.name));
     }
@@ -32,7 +32,7 @@ export const CharactersListPage = () => {
 
   useEffect(() => {
     const getCharacters = () => {
-      const characters = data?.characters?.results as Character[];
+      const characters = data?.characters?.results as CharacterListItem[];
       if(!characters || !allCharactersLoading) {
         return;
       }
@@ -65,7 +65,7 @@ export const CharactersListPage = () => {
   }
 
   const handleSortByName = () => {
-    let newAllCharacters: Character[];
+    let newAllCharacters: CharacterListItem[];
     let newSorting: Sorting | undefined;
     if(currentSort === 'asc') {
       newAllCharacters = sortByName(allCharacters, 'desc');

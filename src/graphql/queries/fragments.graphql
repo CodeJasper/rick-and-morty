@@ -1,6 +1,21 @@
-fragment CharacterFields on Character {
+fragment CharacterListItemFields on Character {
   id
   name
   image
   species
+}
+
+fragment CharacterDetailFields on Character {
+  id
+  name
+  image
+  species
+  status
+  gender
+  origin {
+    name
+  }
+  location {
+    name
+  }
 }

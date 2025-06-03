@@ -1,10 +1,10 @@
 import { useEffect, useRef } from "react";
-import type { Character } from "./types";
+import type { CharacterListItem } from "./types";
 import { useInView } from "react-intersection-observer";
 import { CharacterCard } from "./CharacterCard";
 
 type CharacterListProps = {
-  characters: Character[];
+  characters: CharacterListItem[];
   handleGetNextPage: () => void;
   allCharactersLoading: boolean;
 };

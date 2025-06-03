@@ -203,7 +203,16 @@ export type QueryLocationsByIdsArgs = {
   ids: Array<Scalars['ID']['input']>;
 };
 
-export type CharacterFieldsFragment = { __typename?: 'Character', id?: string | null, name?: string | null, image?: string | null, species?: string | null };
+export type CharacterListItemFieldsFragment = { __typename?: 'Character', id?: string | null, name?: string | null, image?: string | null, species?: string | null };
+
+export type CharacterDetailFieldsFragment = { __typename?: 'Character', id?: string | null, name?: string | null, image?: string | null, species?: string | null, status?: string | null, gender?: string | null, origin?: { __typename?: 'Location', name?: string | null } | null, location?: { __typename?: 'Location', name?: string | null } | null };
+
+export type GetCharacterByIdQueryVariables = Exact<{
+  id: Scalars['ID']['input'];
+}>;
+
+
+export type GetCharacterByIdQuery = { __typename?: 'Query', character?: { __typename?: 'Character', id?: string | null, name?: string | null, image?: string | null, species?: string | null, status?: string | null, gender?: string | null, origin?: { __typename?: 'Location', name?: string | null } | null, location?: { __typename?: 'Location', name?: string | null } | null } | null };
 
 export type GetCharactersQueryVariables = Exact<{
   page?: InputMaybe<Scalars['Int']['input']>;
@@ -212,14 +221,70 @@ export type GetCharactersQueryVariables = Exact<{
 
 export type GetCharactersQuery = { __typename?: 'Query', characters?: { __typename?: 'Characters', info?: { __typename?: 'Info', count?: number | null, pages?: number | null, next?: number | null, prev?: number | null } | null, results?: Array<{ __typename?: 'Character', id?: string | null, name?: string | null, image?: string | null, species?: string | null } | null> | null } | null };
 
-export const CharacterFieldsFragmentDoc = gql`
-    fragment CharacterFields on Character {
+export const CharacterListItemFieldsFragmentDoc = gql`
+    fragment CharacterListItemFields on Character {
   id
   name
   image
   species
 }
     `;
+export const CharacterDetailFieldsFragmentDoc = gql`
+    fragment CharacterDetailFields on Character {
+  id
+  name
+  image
+  species
+  status
+  gender
+  origin {
+    name
+  }
+  location {
+    name
+  }
+}
+    `;
+export const GetCharacterByIdDocument = gql`
+    query GetCharacterById($id: ID!) {
+  character(id: $id) {
+    ...CharacterDetailFields
+  }
+}
+    ${CharacterDetailFieldsFragmentDoc}`;
+
+/**
+ * __useGetCharacterByIdQuery__
+ *
+ * To run a query within a React component, call `useGetCharacterByIdQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetCharacterByIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetCharacterByIdQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetCharacterByIdQuery(baseOptions: Apollo.QueryHookOptions<GetCharacterByIdQuery, GetCharacterByIdQueryVariables> & ({ variables: GetCharacterByIdQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetCharacterByIdQuery, GetCharacterByIdQueryVariables>(GetCharacterByIdDocument, options);
+      }
+export function useGetCharacterByIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetCharacterByIdQuery, GetCharacterByIdQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetCharacterByIdQuery, GetCharacterByIdQueryVariables>(GetCharacterByIdDocument, options);
+        }
+export function useGetCharacterByIdSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetCharacterByIdQuery, GetCharacterByIdQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetCharacterByIdQuery, GetCharacterByIdQueryVariables>(GetCharacterByIdDocument, options);
+        }
+export type GetCharacterByIdQueryHookResult = ReturnType<typeof useGetCharacterByIdQuery>;
+export type GetCharacterByIdLazyQueryHookResult = ReturnType<typeof useGetCharacterByIdLazyQuery>;
+export type GetCharacterByIdSuspenseQueryHookResult = ReturnType<typeof useGetCharacterByIdSuspenseQuery>;
+export type GetCharacterByIdQueryResult = Apollo.QueryResult<GetCharacterByIdQuery, GetCharacterByIdQueryVariables>;
 export const GetCharactersDocument = gql`
     query GetCharacters($page: Int) {
   characters(page: $page) {
@@ -230,11 +295,11 @@ export const GetCharactersDocument = gql`
       prev
     }
     results {
-      ...CharacterFields
+      ...CharacterListItemFields
     }
   }
 }
-    ${CharacterFieldsFragmentDoc}`;
+    ${CharacterListItemFieldsFragmentDoc}`;
 
 /**
  * __useGetCharactersQuery__
