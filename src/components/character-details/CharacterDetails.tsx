@@ -1,3 +1,4 @@
+import { FavoriteButton } from "../favorite-button/FavoriteButton";
 import type { CharacterDetail } from "./types";
 
 type CharacterDetailProps = {
@@ -13,8 +14,11 @@ export const CharacterDetails = ({ character }: CharacterDetailProps) => {
           alt={character.name ?? ""}
           className="w-64 h-64 object-cover rounded-lg border"
         />
-        <div>
-          <h2 className="text-3xl font-bold mb-2">{character.name}</h2>
+        <div className="grow">
+          <div className="mb-6 flex gap-2 flex-col lg:gap-6 lg:flex-row items-start justify-between">
+            <h2 className="text-3xl font-bold mb-2">{character.name}</h2>
+            <FavoriteButton />
+          </div>
           <p className="text-gray-600 mb-1"><strong>Species:</strong> {character.species}</p>
           <p className="text-gray-600 mb-1"><strong>Status:</strong> {character.status}</p>
           <p className="text-gray-600 mb-1"><strong>Gender:</strong> {character.gender}</p>
